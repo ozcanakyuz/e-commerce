@@ -3,11 +3,12 @@ from django.db import models
 from django.forms import ModelForm
 
 from product.models import Product
-# Create your models here.
 
+
+# Create your models here.
 class ShopCart(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    # product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField()
 
     def __str__(self):
@@ -26,7 +27,6 @@ class ShopCartForm(ModelForm):
     class Meta:
         model = ShopCart
         fields = ['quantity']
-
 
 class Order(models.Model):
     STATUS = (

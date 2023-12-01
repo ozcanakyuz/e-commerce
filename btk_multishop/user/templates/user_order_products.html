@@ -48,19 +48,19 @@
                                     <td class="text-left">
                                         <a href="/product/{{ rs.product_id }}/{{ rs.product.slug }}">
                                             {% if rs.variant.image_id > 0 %}
-                                                <img src="{{rs.variant.image }}" alt="" style="height: 80px">
+                                                <img src="{{ rs.variant.image }}" alt="" style="height: 80px">
                                             {% else %}
-                                                <img src="{{rs.product.image.url}}" alt="" style="height: 80px">
+                                                <img src="{{ rs.product.image.url}}" alt="" style="height: 80px">
                                             {% endif %}
                                         </a>
                                     </td>
-                                    <td>{{ rs.product.title}} {{ rs.variant.size }}   {{ rs.variant.color }}</td>
-                                    <td class="text-left">{{ rs.price}} </td>
-                                    <td class="text-left">{{ rs.quantity}} </td>
-                                    <td class="text-left">{{ rs.amount}} </td>
-                                    <td class="text-left">{{ rs.status}} </td>
-                                    <td class="text-left">{{ rs.create_at}} </td>
-                                    <td class="text-left"><a class="primary-btn" href="/user/order_product_detail/{{ rs.id }}/{{ rs.order.id}}"> Detail </a></td>
+                                    <td>{{ rs.product.title }} {{ rs.variant.size }}   {{ rs.variant.color }}</td>
+                                    <td class="text-left">{{ rs.price }} </td>
+                                    <td class="text-left">{{ rs.quantity }} </td>
+                                    <td class="text-left">{{ rs.amount }} </td>
+                                    <td class="text-left">{{ rs.status }} </td>
+                                    <td class="text-left">{{ rs.create_at }} </td>
+                                    <td class="text-left"><a class="primary-btn" href="/user/order_product_detail/{{ rs.id }}/{{ rs.order.id }}"> Detail </a></td>
 
                                 </tr>
                             {% endfor %}

@@ -25,7 +25,6 @@ class Category(MPTTModel): #! MPTTModel oldu.
     def get_absolute_url(self):
         return reverse("categoryProducts", kwargs={"slug": self.slug})
     
-
     def __str__(self):  # __str__ method elaborated later in
         full_path = [self.title]  # post.  use __unicode__ in place of
         k = self.parent
@@ -49,9 +48,7 @@ class Product(models.Model):
     # detail=RichTextUploadingField()
     detail = models.TextField()
     status = models.CharField(max_length=10,choices=STATUS)
-
-
-    slug = models.SlugField()
+    slug = models.SlugField(null=False, unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 

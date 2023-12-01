@@ -7,12 +7,11 @@ import home
 
 
 urlpatterns = [
-    path('', include('home.urls')),     #! random url result
+    path('', include('home.urls')),    
     path('admin', admin.site.urls),
 
     #? blog pages
     path('home/', include('home.urls')),
-    path('admin/', admin.site.urls),
     path('product/', include('product.urls')),
     path('user/', include('user.urls')),
     path('order/', include('order.urls')),
