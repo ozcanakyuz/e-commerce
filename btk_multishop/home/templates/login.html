@@ -1,0 +1,47 @@
+{% extends 'homebase.html' %}
+{% block title %} {{ setting.title }}{% endblock %}
+{% block description %} index description {% endblock %}
+{% block keywords %} index keywords {% endblock %}
+
+{% block head %} <link rel="shortcut icon" type="image/x-icon" href="{{ setting.icon.url }}" >  {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %}  {% endblock %}
+
+{% block body %}
+
+    
+<!-- Contact Start -->
+    <div class="container-fluid pt-5">
+        <div class="text-center mb-5">
+            <h2 class="section-title px-5"><span class="px-2">Sign In</span></h2>
+        </div>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5 mt-5">
+                <div class="contact-form">
+
+    {% comment %}! GİRİŞ YAPINCA BAŞARILI ŞEKİLDE OTURUM AÇTIĞINI SÖYLEYEN KISIM {% endcomment %}
+
+                    <div id="success">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{message.tags}}" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <form name="sentMessage" id="contactForm" novalidate="novalidate" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p | safe }}
+                        <div>
+                            <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Sign In</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+ {% endblock %}

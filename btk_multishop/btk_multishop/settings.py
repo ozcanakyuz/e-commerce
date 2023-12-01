@@ -16,6 +16,8 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#! ALTTAKI KOD URL SONUNA "/" EKLEMEYI ENGELLER
+APPEND_SLASH = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -41,12 +43,14 @@ INSTALLED_APPS = [
 
     #? My apps
     'home',
-    # 'product',
-    # 'user',
+    'order',
+    'product',
+    'user',
     #? Editor
     'ckeditor',
     'ckeditor_uploader',
     'active_link',
+    'mptt',
 ]
 
 MIDDLEWARE = [
