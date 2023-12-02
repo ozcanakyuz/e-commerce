@@ -217,11 +217,11 @@
                                         <div class="media-body">
                                             <h6>{{ yorum.user.get_full_name }} <small> - <i>{{ yorum.create_at }}</i></small></h6>
                                             <div class="text-primary mb-2">
-                                            {% with ''|center:yorum.rate as range %}
+                                    {% with ''|center:yorum.rate as range %}
                                         {% for _ in range %}
                                         <i class="fas fa-star text-warning"></i>
                                         {% endfor %}
-                                        {% endwith %}
+                                    {% endwith %}
                                             </div>
                                             <p>{{ yorum.comment }}</p>
                                         </div>
@@ -240,6 +240,8 @@
 
                                 <h4 class="mb-4">Bir Yorum Bırakınız</h4>
                                 <small><b>Your email address will not be published. Required fields are marked*</b></small>
+                                <form action="/product/addcomment/{{ urun.id }}" method="post">
+                                    {% csrf_token %}
                                     <div class="d-flex my-3">
                                         <p class="mb-0 mr-2">Your Rating * :</p>
                                         <div class="stars">
@@ -249,10 +251,7 @@
                                             <input type="radio" id="star4" name="rate" value=4 /><label for="star4">4<i class="fas fa-star text-warning"></i></label>
                                             <input type="radio" id="star5" name="rate" value=5 /><label for="star5">5<i class="fas fa-star text-warning"></i></label>
                                         </div>
-                                    </div>
-                                    
-                                    <form action="/product/addcomment/{{ urun.id }}" method="post">
-                                        {% csrf_token %}
+                                    </div>  
                                         <div class="form-group">
                                             <label for="message">Your Review *</label>
                                             <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
