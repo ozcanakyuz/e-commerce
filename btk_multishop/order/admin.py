@@ -1,12 +1,18 @@
 from django.contrib import admin
 
-from order.models import ShopCart, OrderProduct, Order
+from order.models import Favorits, ShopCart, OrderProduct, Order
 
 
 # Register your models here.
 class ShopCartAdmin(admin.ModelAdmin):
     list_display = ['product','user','quantity','price','amount' ]
     list_filter = ['user']
+
+class FavoriteCartAdmin(admin.ModelAdmin):
+    list_display = ['product','user','quantity','price','amount' ]
+    list_filter = ['user']
+admin.site.register(Favorits, FavoriteCartAdmin)
+
 
 class OrderProductline(admin.TabularInline):
     model = OrderProduct
