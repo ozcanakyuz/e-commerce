@@ -62,7 +62,6 @@ def shopcart(request):
     total=0
     for rs in shopcart:
         total += rs.product.price * rs.quantity
-        print(total)
     context={'shopcart': shopcart,
              'total': total,
              }
@@ -131,7 +130,7 @@ def orderproduct(request):
             return render(request, 'order_completed.html',{'ordercode':ordercode})
         else:
             messages.warning(request, form.errors)
-            return HttpResponseRedirect("/order/orderproduct")
+            return HttpResponseRedirect("/checkout")
 
     form= OrderForm()
     profile = UserProfile.objects.get(user_id=current_user.id)
@@ -140,7 +139,7 @@ def orderproduct(request):
                'form': form,
                'profile': profile,
                }
-    return render(request, 'order_form.html', context)
+    return render(request, 'checkout.html', context)
 
 @login_required(login_url='/login') # Check login
 def addtofavorits(request,id):
@@ -192,7 +191,6 @@ def favorits(request):
     total=0
     for rs in favorits:
         total += rs.product.price * rs.quantity
-        print(total)
     context={'favorits': favorits,
              'total': total,
              }
