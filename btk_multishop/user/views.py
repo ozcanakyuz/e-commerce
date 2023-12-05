@@ -6,8 +6,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from home.models import Setting, UserProfile
-from order.models import Order, OrderProduct
-from product.models import Category, Comment
+from order.models import Favorits, Order, OrderProduct
+from product.models import Category, Comment, Product
 from user.forms import UserUpdateForm, ProfileUpdateForm
 
 
@@ -67,10 +67,8 @@ def user_orderdetail(request,id):
     current_user = request.user
     order = Order.objects.get(user_id=current_user.id, id=id)
     orderitems = OrderProduct.objects.filter(order_id=id)
-    context = {
-        'order': order,
-        'orderitems': orderitems,
-    }
+    context = {'order': order,
+               'orderitems': orderitems,}
     return render(request, 'user_order_detail.html', context)
 
 @login_required(login_url='/login') # Check login
@@ -104,3 +102,12 @@ def user_deletecomment(request,id):
     Comment.objects.filter(id=id, user_id=current_user.id).delete()
     messages.success(request, 'Comment deleted..')
     return HttpResponseRedirect('/user/comments')
+
+@login_required(login_url='/login') # Check login
+def user_favorites(request):
+    current_user = request.user  # Access User Session information
+    urunler = Product.objects.all()
+    favorits = Favorits.objects.filter(user_id=current_user.id)
+    context = {'favorits': favorits,
+               'urunler': urunler,}
+    return render(request, 'user_favorites.html', context)

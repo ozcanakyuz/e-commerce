@@ -88,15 +88,22 @@ class Favorits(models.Model):
     quantity = models.IntegerField()
 
     def __str__(self):
-        return self.product.title
+        if self.product:
+            return self.product.title
+        return f"Favorit-{self.id}" 
 
     @property
     def price(self):
-        return (self.product.price)
+        if self.product:
+            return self.product.price
+        return f"Favorit-{self.price}" 
 
     @property
     def amount(self):
-        return (self.quantity * self.product.price)
+        if self.product:
+            return self.product.amount
+        return f"Favorit-{self.id}" 
+        # return (self.quantity * self.product.price)
 
 
 class FavoritsForm(ModelForm):

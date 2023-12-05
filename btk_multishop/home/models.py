@@ -44,8 +44,10 @@ class UserProfile(models.Model):
     city = models.CharField(blank=True, max_length=20)
     country = models.CharField(blank=True, max_length=50)
     image = models.ImageField(blank=True, upload_to='images/users/')
+
     def __str__(self):
         return self.user.username
+    
     def user_name(self):
         return self.user.first_name + ' ' + self.user.last_name + ' [' + self.user.username + '] '
 

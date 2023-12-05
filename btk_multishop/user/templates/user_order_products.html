@@ -8,8 +8,8 @@
 {% block body %}
 
         <!-- Page Header Start -->
-    <div class="container-fluid bg-secondary mb-5">
-        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+    <div class="container-fluid bg-secondary mb-4">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Order Products</h1>
             <div class="d-inline-flex">
                 <p class="m-0"><a href="/">Anasayfa</a></p>
@@ -22,30 +22,26 @@
 
 
     <!-- Contact Start -->
-    <div class="container-fluid pt-5">
+    <div class="container-fluid">
         <div class="row px-xl-5">
             {% include 'user_panel.html' %}
-                       <div class="col-lg-9 table-responsive mb-5">
-                        <div class="col-md-10">
-                    <div class="order-summary clearfix">
-                        <div>
-                            <h3 class="title">Order Product List</h3>
-                        </div>
-
-                        <table class="shopping-cart-table table">
+            <div class="col-lg-9 table-responsive mb-5">
+                    <table class="table table-light table-borderless table-hover text-center mb-0">
+                        <thead class="thead-dark">
                             <tr>
-                                <th class="text-left">Id </th>
-                                <th class="text-left">Product Name </th>
-                                <th class="text-left">Price </th>
-                                <th class="text-left">Qauatity </th>
-                                <th class="text-left">Amount </th>
-                                <th class="text-left">Status </th>
-                                <th class="text-left">Date </th>
-                                <th class="text-left">Detail </th>
+                                <th class="align-middle">Id </th>
+                                <th class="align-middle">Product Name </th>
+                                <th class="align-middle">Price </th>
+                                <th class="align-middle">Qauatity </th>
+                                <th class="align-middle">Amount </th>
+                                <th class="align-middle">Status </th>
+                                <th class="align-middle">Date </th>
+                                <th class="align-middle">Detail </th>
                             </tr>
+                        </thead>
                             {% for rs in order_product %}
                                 <tr>
-                                    <td class="text-left">
+                                    <td class="align-middle">
                                         <a href="/product/{{ rs.product_id }}/{{ rs.product.slug }}">
                                             {% if rs.variant.image_id > 0 %}
                                                 <img src="{{ rs.variant.image }}" alt="" style="height: 80px">
@@ -55,22 +51,17 @@
                                         </a>
                                     </td>
                                     <td>{{ rs.product.title }} {{ rs.variant.size }}   {{ rs.variant.color }}</td>
-                                    <td class="text-left">{{ rs.price }} </td>
-                                    <td class="text-left">{{ rs.quantity }} </td>
-                                    <td class="text-left">{{ rs.amount }} </td>
-                                    <td class="text-left">{{ rs.status }} </td>
-                                    <td class="text-left">{{ rs.create_at }} </td>
-                                    <td class="text-left"><a class="primary-btn" href="/user/order_product_detail/{{ rs.id }}/{{ rs.order.id }}"> Detail </a></td>
+                                    <td class="align-middle">{{ rs.price }} </td>
+                                    <td class="align-middle">{{ rs.quantity }} </td>
+                                    <td class="align-middle">{{ rs.amount }} </td>
+                                    <td class="align-middle">{{ rs.status }} </td>
+                                    <td class="align-middle">{{ rs.create_at }} </td>
+                                    <td class="align-middle"><a class="primary-btn" href="/user/order_product_detail/{{ rs.id }}/{{ rs.order.id }}"> Detail </a></td>
 
                                 </tr>
                             {% endfor %}
-
-                        </table>
-
-                    </div>
+                    </table>
                 </div>
-
-
             </div>
         </div>
     </div>

@@ -63,8 +63,7 @@ def shopcart(request):
     for rs in shopcart:
         total += rs.product.price * rs.quantity
     context={'shopcart': shopcart,
-             'total': total,
-             }
+             'total': total,}
     return render(request,'shopcart_products.html',context)
 
 @login_required(login_url='/login') # Check login
@@ -184,15 +183,76 @@ def addtofavorits(request,id):
         request.session['favorite_items'] = Favorits.objects.filter(user_id=current_user.id).count()
         messages.success(request, "Product added to Shopcart")
         return HttpResponseRedirect(url)
-    
+
+
 def favorits(request):
     current_user = request.user  # Access User Session information
+    urunler = Product.objects.all()
+    # carturunler = Product.objects.get(pk=id)
     favorits = Favorits.objects.filter(user_id=current_user.id)
-    total=0
-    for rs in favorits:
-        total += rs.product.price * rs.quantity
-    context={'favorits': favorits,
-             'total': total,
-             }
-    return render(request,'shopcart_favorits.html',context)
+    # total = 0
+    # for rs in favorits:
+    #     # rs.product None değilse ve rs.product.price tanımlıysa devam et
+    #     if rs.product and rs.product.price:
+    #         total += rs.product.price * rs.quantity
+    context = {'favorits': favorits,
+               #? 'total': total,
+               'urunler': urunler,}
+    return render(request, 'shopcart_favorits.html', context)
+
+@login_required(login_url='/login') # Check login
+def addtocartfromfavorites(request,id):
+    url = request.META.get('HTTP_REFERER')  # get last url
+    current_user = request.user  # Access User Session information
+    product= Product.objects.get(pk=id)
+
+    checkinproduct = ShopCart.objects.filter(product_id=id, user_id=current_user.id)  # Check product in shopcart
+    if checkinproduct:
+        control = 1  # The product is in the cart
+    else:
+        control = 0  # The product is not in the cart"""
+
+    if request.method == 'POST':  # if there is a post
+        form = ShopCartForm(request.POST)
+        if form.is_valid():
+            if control == 1:  # Update  shopcart
+                data = ShopCart.objects.get(product_id=id, user_id=current_user.id)
+                data.quantity += form.cleaned_data['quantity']
+                data.save()  # save data
+            else:  # Inser to Shopcart
+                data = ShopCart()
+                data.user_id = current_user.id
+                data.product_id = id
+                data.quantity = form.cleaned_data['quantity']
+                data.save()
+        messages.success(request, "Product added to Shopcart ")
+        request.session['cart_items'] = ShopCart.objects.filter(user_id = current_user.id).count()
+        return HttpResponseRedirect(url)
+
+    else:  # if there is no post
+        if control == 1:  # Update  shopcart
+            data = ShopCart.objects.get(product_id=id, user_id=current_user.id)
+            data.quantity += 1
+            data.save()  #
+        else:  # Insert to Shopcart
+            data = ShopCart()  # model ile bağlantı kur
+            data.user_id = current_user.id
+            data.product_id = id
+            data.quantity = 1
+            data.save()  #
+        request.session['cart_items'] = ShopCart.objects.filter(user_id=current_user.id).count()
+        messages.success(request, "Product added to Shopcart")
+        return HttpResponseRedirect(url)
+  
+# def favorits(request):
+#     current_user = request.user  # Access User Session information
+#     favorits = Favorits.objects.filter(user_id=current_user.id)
+#     total=0
+#     for rs in favorits:
+#         if rs.product and rs.product.price:
+#             total += rs.product.price * rs.quantity
+#     context={'favorits': favorits,
+#              'total': total,
+#              }
+#     return render(request,'shopcart_favorits.html',context)
 

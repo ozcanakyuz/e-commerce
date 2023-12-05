@@ -29,36 +29,32 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>Products</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
                             <th>Total</th>
-                            <th>Remove</th>
+                            <th>Price</th>
+                            <th>Add to cart<span class="mx-2">-</span>Remove</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
 
-                    {%  for urun in favorits %}
+                    {% for urun in favorits %}
                         <tr class="product_data">
-                            <td class="align-middle"><img src="{{ urun.product.image.url}}" alt="" style="width: 50px;">{{ urun }}</td>
-                            <td class="align-middle">{{urun.price}}</td>
                             <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="{{ urun.quantity }}">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                            {% for favin in urunler %}
+                                <a href="/product_detail/{{ favin.id }}/{{ favin.slug }}">
+                            {% endfor %}
+                                <img src="{{ urun.product.image.url}}" alt="" style="width: 50px;">{{ urun }}
+                                </a>
                             </td>
                             <td class="align-middle">{{urun.amount}}</td>
+                            <td class="align-middle">${{urun.price}}</td>
                             <td class="align-middle">
-                                <a href="/order/deletefromfavorits/{{ urun.id }}"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></a></td>
+                                {% for favin in urunler %}
+                                <a href="/order/addtocart/{{ favin.id }}">
+                                {% endfor %}
+                                    <button class="btn btn-outline-warning mr-4"><i class="fa fa-shopping-cart"></i></button></a>
+
+                                <a href="/order/deletefromfavorits/{{ urun.id }}"><button class="btn btn-outline-danger"><i class="fa fa-times"></i></button></a>
+                            </td>
                         </tr>
                     {% endfor %}
                     

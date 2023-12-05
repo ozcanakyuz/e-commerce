@@ -6,7 +6,7 @@ from django.contrib.auth import logout, authenticate, login
 from home.forms import ContactForm, SearchForm, LoginForm, SignUpForm
 from home.models import Setting, ContactFormMessage, UserProfileForm, UserProfile
 from product.models import Product, Category, Images, Comment, CommentForm
-from order.models import ShopCart
+from order.models import Favorits, ShopCart
 
 
 def index(request):
@@ -20,14 +20,22 @@ def index(request):
     return render(request, 'index.html', context)
 
 def shop(request):
-    context = {'page': 'shop'}
+    urunler = Product.objects.all()
+    context = {'page': 'shop',
+               'urunler': urunler,}
     return render(request, 'shop.html', context)
+
+def slider(request):
+    urunler = Product.objects.all()
+    context = {'page': 'Slider',
+               'urunler': urunler,}
+    return render(request, 'shop.html', context)
+
 def detail(request):
-    context = {'page': 'detail'}
+    urunler = Product.objects.all()
+    context = {'page': 'detail',
+               'urunler': urunler,}
     return render(request, 'detail.html', context)
-def contact(request):
-    context = {'page': 'contact'}
-    return render(request, 'contact.html', context)
 def checkout(request):
     context = {'page': 'checkout'}
     return render(request, 'checkout.html', context)
@@ -45,6 +53,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 request.session['cart_items'] = ShopCart.objects.filter(user_id=user.id).count()
+                request.session['favorite_items'] = Favorits.objects.filter(user_id=user.id).count()
                 messages.success(request, "Başarılı şekilde oturum açtınız {}".format(user.username))
                 return HttpResponseRedirect('/user/userprofile')
             else:
@@ -107,7 +116,7 @@ def userProfile_view(request):
     context = {'form': form}
     return render(request, 'userprofile.html', context)
 
-def iletisim(request):
+def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -119,22 +128,21 @@ def iletisim(request):
             data.ip = request.META.get('REMOTE_ADDR')
             data.save() #? SAVE DATA
             messages.success(request, "Your message has been sent. Thank you for your message.") #? Kullanıcıya mesajının iletildiğine dair bilgi veriliyor.
-            return HttpResponseRedirect('/iletisim') #?Kullanıcıyı iletisim sayfasına gönderir.
+            return HttpResponseRedirect('/contact') #?Kullanıcıyı contact sayfasına gönderir.
         else:
             messages.warning(request, "Your message has'nt been sent.NOT VALID !!")    
     setting = Setting.objects.get(pk=1)
     form = ContactForm
-    context = {'page': 'iletisim',
+    context = {'page': 'contact',
                'form': form}
-    return render(request, 'iletisim.html', context)
+    return render(request, 'contact.html', context)
 
 def categoryProducts(request, id, slug):
     urunKategori = Category.objects.get(pk=id)
     urunler = list(Product.objects.filter(category_id=id)) #! for urun in urunler kısmı == kategori_urunler.html
 
     node = Category.objects.get(pk=id)
-    children = Category.objects.add_related_count(node.get_children(), Product,
-                                                  'category', 'product_counts')
+    children = Category.objects.add_related_count(node.get_children(), Product,'category', 'product_counts')
     for dd in children:
         a = list(Product.objects.filter(category_id=dd.id))
         urunler.extend(a)
@@ -146,13 +154,12 @@ def categoryProducts(request, id, slug):
 
 def productDetail(request, id, slug):
     urun = Product.objects.get(pk=id)
+    urunler = Product.objects.all()
     images = Images.objects.filter(product=urun)
-    # print(request.get_full_path())
-    # print(request.get_host())
-    # print(request.build_absolute_uri())
     comments = Comment.objects.filter(product_id=id)
     context = {'page': 'Urun',
                'urun': urun,
+               'urunler': urunler,
                'images': images,
                'comments': comments}
     return render(request, 'product_detail.html', context)
