@@ -82,7 +82,7 @@ class OrderProduct(models.Model):
 
 
 
-class Favorits(models.Model):
+class Favorites(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField()
@@ -106,7 +106,7 @@ class Favorits(models.Model):
         # return (self.quantity * self.product.price)
 
 
-class FavoritsForm(ModelForm):
+class FavoritesForm(ModelForm):
     class Meta:
-        model = Favorits
+        model = Favorites
         fields = ['quantity']

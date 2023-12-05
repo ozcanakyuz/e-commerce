@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
 from home.models import UserProfile
-from order.models import Favorits, FavoritsForm, ShopCartForm, ShopCart, OrderForm, Order, OrderProduct
+from order.models import Favorites, FavoritesForm, ShopCartForm, ShopCart, OrderForm, Order, OrderProduct
 from product.models import Product, Category
 
 
@@ -78,10 +78,10 @@ def deletefromcart(request,id):
 @login_required(login_url='/login') # Check login
 def deletefromfavorits(request,id):
     url = request.META.get('HTTP_REFERER')  # get last url
-    Favorits.objects.filter(id=id).delete()
+    Favorites.objects.filter(id=id).delete()
     current_user = request.user  # Access User Session information
     messages.success(request, "Your item deleted form Shopcart.")
-    request.session['favorite_items'] = Favorits.objects.filter(user_id=current_user.id).count()
+    request.session['favorite_items'] = Favorites.objects.filter(user_id=current_user.id).count()
     return HttpResponseRedirect(url)
 
 def orderproduct(request):
@@ -146,41 +146,41 @@ def addtofavorits(request,id):
     current_user = request.user  # Access User Session information
     product= Product.objects.get(pk=id)
 
-    checkinproduct = Favorits.objects.filter(product_id=id, user_id=current_user.id)  # Check product in shopcart
+    checkinproduct = Favorites.objects.filter(product_id=id, user_id=current_user.id)  # Check product in shopcart
     if checkinproduct:
         control = 1  # The product is in the cart
     else:
         control = 0  # The product is not in the cart"""
 
     if request.method == 'POST':  # if there is a post
-        form = FavoritsForm(request.POST)
+        form = FavoritesForm(request.POST)
         if form.is_valid():
             if control == 1:  # Update  shopcart
-                data = Favorits.objects.get(product_id=id, user_id=current_user.id)
+                data = Favorites.objects.get(product_id=id, user_id=current_user.id)
                 data.quantity += form.cleaned_data['quantity']
                 data.save()  # save data
             else:  # Inser to Shopcart
-                data = Favorits()
+                data = Favorites()
                 data.user_id = current_user.id
                 data.product_id = id
                 data.quantity = form.cleaned_data['quantity']
                 data.save()
         messages.success(request, "Product added to Shopcart ")
-        request.session['favorite_items'] = Favorits.objects.filter(user_id = current_user.id).count()
+        request.session['favorite_items'] = Favorites.objects.filter(user_id = current_user.id).count()
         return HttpResponseRedirect(url)
 
     else:  # if there is no post
         if control == 1:  # Update  shopcart
-            data = Favorits.objects.get(product_id=id, user_id=current_user.id)
+            data = Favorites.objects.get(product_id=id, user_id=current_user.id)
             data.quantity += 1
             data.save()  #
         else:  # Insert to Shopcart
-            data = Favorits()  # model ile bağlantı kur
+            data = Favorites()  # model ile bağlantı kur
             data.user_id = current_user.id
             data.product_id = id
             data.quantity = 1
             data.save()  #
-        request.session['favorite_items'] = Favorits.objects.filter(user_id=current_user.id).count()
+        request.session['favorite_items'] = Favorites.objects.filter(user_id=current_user.id).count()
         messages.success(request, "Product added to Shopcart")
         return HttpResponseRedirect(url)
 
@@ -189,7 +189,7 @@ def favorits(request):
     current_user = request.user  # Access User Session information
     urunler = Product.objects.all()
     # carturunler = Product.objects.get(pk=id)
-    favorits = Favorits.objects.filter(user_id=current_user.id)
+    favorits = Favorites.objects.filter(user_id=current_user.id)
     # total = 0
     # for rs in favorits:
     #     # rs.product None değilse ve rs.product.price tanımlıysa devam et
@@ -246,7 +246,7 @@ def addtocartfromfavorites(request,id):
   
 # def favorits(request):
 #     current_user = request.user  # Access User Session information
-#     favorits = Favorits.objects.filter(user_id=current_user.id)
+#     favorits = Favorites.objects.filter(user_id=current_user.id)
 #     total=0
 #     for rs in favorits:
 #         if rs.product and rs.product.price:

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from order.models import Favorits, ShopCart, OrderProduct, Order
+from order.models import Favorites, ShopCart, OrderProduct, Order
 
 
 # Register your models here.
@@ -12,7 +12,7 @@ admin.site.register(ShopCart,ShopCartAdmin)
 class FavoriteCartAdmin(admin.ModelAdmin):
     list_display = ['product','user','quantity','price','amount' ]
     list_filter = ['user']
-admin.site.register(Favorits, FavoriteCartAdmin)
+admin.site.register(Favorites, FavoriteCartAdmin)
 
 
 class OrderProductline(admin.TabularInline):
@@ -21,11 +21,10 @@ class OrderProductline(admin.TabularInline):
     can_delete = False
     extra = 0
 
-
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['first_name', 'last_name','phone','city','total','status']
     list_filter = ['status']
-    readonly_fields = ('user','address','city','country','phone','first_name','ip', 'last_name','phone','city','total')
+    readonly_fields = ('user','address','city','country','first_name','ip', 'last_name','phone','city','total')
     can_delete = False
     inlines = [OrderProductline]
 admin.site.register(Order,OrderAdmin)

@@ -6,7 +6,7 @@ from django.contrib.auth import logout, authenticate, login
 from home.forms import ContactForm, SearchForm, LoginForm, SignUpForm
 from home.models import Setting, ContactFormMessage, UserProfileForm, UserProfile
 from product.models import Product, Category, Images, Comment, CommentForm
-from order.models import Favorits, ShopCart
+from order.models import Favorites, ShopCart
 
 
 def index(request):
@@ -53,7 +53,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 request.session['cart_items'] = ShopCart.objects.filter(user_id=user.id).count()
-                request.session['favorite_items'] = Favorits.objects.filter(user_id=user.id).count()
+                request.session['favorite_items'] = Favorites.objects.filter(user_id=user.id).count()
                 messages.success(request, "Başarılı şekilde oturum açtınız {}".format(user.username))
                 return HttpResponseRedirect('/user/userprofile')
             else:

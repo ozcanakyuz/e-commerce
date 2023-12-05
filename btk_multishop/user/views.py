@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from home.models import Setting, UserProfile
-from order.models import Favorits, Order, OrderProduct
+from order.models import Favorites, Order, OrderProduct
 from product.models import Category, Comment, Product
 from user.forms import UserUpdateForm, ProfileUpdateForm
 
@@ -107,7 +107,7 @@ def user_deletecomment(request,id):
 def user_favorites(request):
     current_user = request.user  # Access User Session information
     urunler = Product.objects.all()
-    favorits = Favorits.objects.filter(user_id=current_user.id)
-    context = {'favorits': favorits,
+    favorites = Favorites.objects.filter(user_id=current_user.id)
+    context = {'favorites': favorites,
                'urunler': urunler,}
     return render(request, 'user_favorites.html', context)
