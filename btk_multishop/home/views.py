@@ -21,7 +21,17 @@ def index(request):
 
 def shop(request):
     urunler = Product.objects.all()
+
+    #! FILTRELEME OZELLIGI
+    min_price = request.GET.get('min_price', 0)
+    max_price = request.GET.get('max_price', float('inf'))
+    if min_price == "" or max_price == "":
+        return render(request, 'shop.html')
+    else:
+        products = Product.objects.filter(price__range=(min_price, max_price))
+    
     context = {'page': 'shop',
+               'products': products,
                'urunler': urunler,}
     return render(request, 'shop.html', context)
 
